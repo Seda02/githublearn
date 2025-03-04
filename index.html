@@ -1,21 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Мой сайт на Github</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Мой сайт на Github</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, vero debitis! Debitis labore fuga quaerat inventore officia. Suscipit eligendi expedita molestiae? Sit voluptate dolor expedita atque laborum. Aspernatur, voluptatum dolores!</p>
+    <header>
+        <h1>Мой сайт на Github</h1>
+        <nav>
+            <ul>
+                <li><a href="#">🏠 Главная</a></li>
+                <li><a href="#">🥗 Питание</a></li>
+                <li><a href="#">💪 Фитнес</a></li>
+                <li><a href="#">📞 Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <section id="about">
+            <h2>О нас</h2>
+            <p>Мы стремимся помочь людям вести здоровый образ жизни, предоставляя полезную информацию и советы.</p>
+        </section>
+    </main>
+
+    <button class="sort-button" onclick="sortSections('asc')">Сортировать по возрастанию</button>
+    <button class="sort-button" onclick="sortSections('desc')">Сортировать по убыванию</button>
+
+    <script>
+        // Пример данных, которые могли бы прийти с API
+        const apiData = [
+            { title: "Первый раздел", content: "Контент первого раздела", date: "2023-01-01" },
+            { title: "Второй раздел", content: "Контент второго раздела", date: "2023-03-01" },
+            { title: "Третий раздел", content: "Контент третьего раздела", date: new Date().toISOString().split('T')[0] }
+        ];
+
+        // Массив для хранения секций
+        let sections = [];
+
+        // Функция для отображения секций
+        function displaySections() {
+            const content = document.getElementById('content');
+            content.innerHTML = ''; // Очищаем содержимое
+
+            sections.forEach(section => {
+                const sectionElement = document.createElement('section');
+                const h2 = document.createElement('h2');
+                const pContent = document.createElement('p');
+                const pDate = document.createElement('p');
+                
+                h2.textContent = section.title;
+                pContent.textContent = section.content;
+                pDate.textContent = "Дата публикации: " + new Date(section.date).toLocaleDateString('ru-RU', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                sectionElement.appendChild(h2);
+                sectionElement.appendChild(pContent);
+                sectionElement.appendChild(pDate);
+                content.appendChild(sectionElement);
+            });
+        }
+
+        // Функция для сортировки секций
+        function sortSections(order) {
+            sections.sort((a, b) => order === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
+            displaySections();
+        }
+
+        // Функция для получения данных с "API"
+        function fetchSections() {
+            // Симуляция запроса к API
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(apiData);
+                }, 1000);
+            });
+        }
+
+        // Изначально получаем данные и отображаем секции
+        fetchSections().then(data => {
+            sections = data;
+            displaySections();
+        });
+    </script>
 </body>
-
 </html>
-<section id="about">
-    <h2>О нас</h2>
-    <p>Мы стремимся помочь людям вести здоровый образ жизни, предоставляя полезную информацию и советы.</p>
-</section>
 
-</body>
 
-</html>
+
